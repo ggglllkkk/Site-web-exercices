@@ -1,7 +1,39 @@
 {% extends "base.html" %}
 
+{% block head %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/exercices.css') }}">
+
+{% endblock %}
+
 {% block body %}
 
-woaw
+<div class="questionBox">
+    <div>
+        {{ enonce }}
+        {{ htmlQ | safe }}
+
+        <button class="coursButton" onclick="window.open('/cours/{{ exerciceId }}?userId={{ userId }}','_blank')">Cours</button>
+    </div>
+
+    {% if image!="" %}
+    <img src="{{ url_for("static", filename="/img/"~image) }}" width="200px">
+    {% endif %}
+
+    <form action="/exercice/{{ exerciceId }}?userId={{ userId }}" method="POST">
+
+    <div class="answerBox">
+        {% if textInput %}
+            <input name="textInput" type="text">
+        {% endif %}
+
+        {% for i in range(reponses | length) %}
+            <div> {{ reponses[i] }} <input type="checkbox" name="{{i}}"></div>
+        {% endfor %}
+    </div>
+    
+    <button class="buttonSuivant">Exercice suivant</button>
+    </form>
+</div>
 
 {% endblock %}

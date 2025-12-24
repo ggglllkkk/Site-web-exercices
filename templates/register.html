@@ -2,8 +2,14 @@
 
 {% block body %}
 
-<form action="/register" method="POST">
-    <button type="submit"><h1> Créer le compte </h1></button>
+<form action="/register?userId={{ userId }}" method="POST">
+
+<p class="grosTitre"> Ton numéro de compte est : </p>
+<p class="grosTitre">{{ userId }}</p>
+<p class="grosTitre">Appelle ton professeur pour l'en informer.</p>
+
+<button type="submit"><p class="grosTitre"> Commencer les exercices </p></button>
+
 </form>
 
 {% endblock %}
