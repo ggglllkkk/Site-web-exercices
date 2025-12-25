@@ -10,3 +10,8 @@ body{
 .grosTitre{
     font-size: xx-large;
 }
+
+img{
+    max-width: 110%;
+    max-height: 60%;
+}

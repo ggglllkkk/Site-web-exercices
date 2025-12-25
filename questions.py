@@ -48,7 +48,7 @@ questionsList.append(Question(
 ))
 questionsList.append(Question(
     "5. Quelle est la forme correcte au futur ?",
-    reponses=["je souhaiterai", "je souhaiterais", "je souhaiterait"],
+    reponses=["je partirai", "je partirais", "je partirait"],
     htmlC="""
         Conjugaison du futur:<br>
         Infinitif + terminaison <br>
@@ -91,7 +91,32 @@ questionsList.append(Question(
     imageQ="isocele.png"
 ))
 questionsList.append(Question(
-    "7. Test pour input text",
-    "jsp",
-    textInput=True
+    "7. De que pays Berlin est-elle la capitale ?",
+    imageC="carteEurope.png",
+    textInput=True,
+    reponses=[]
+))
+questionsList.append(Question(
+    "8. Bill veut offrir 5 livres à chacun de ses 8 petits-enfants. Combien de livres doit-il acheter ?",
+    reponses=["5 x 8 = 48", "5 x 8 = 40", "5 x 8 = 38"],
+    imageC="tableauPythagore.png"
+))
+questionsList.append(Question(
+    "9. Un arbre est-elle un être vivant ?",
+    "Un être vivant naît, grandit, se nourrit, se reproduit et meurt."
+))
+questionsList.append(Question(
+    "10. La liquéfaction est le passage :",
+    reponses=["De l'état solide à l'état gazeux", "De l'état gazeux à l'état liquide", "De l'état liquide à l'état gazeux"],
+    imageC="etatsMatiere.png"
+))
+questionsList.append(Question(
+    "11. Quel évènement est le plus ancien ?",
+    reponses=["L'affaire Dreyfus", "Réforme scolaire de Jules Ferry", "Loi de séparation de l'Eglise et de l'Etat"],
+    imageC="friseChrono.png"
+))
+questionsList.append(Question(
+    "12. Qui est l'intrus ?",
+    reponses=["Europe", "Amérique", "Indonésie", "Afrique"],
+    imageC="planisphere.gif"
 ))

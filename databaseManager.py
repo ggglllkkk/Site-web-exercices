@@ -9,7 +9,7 @@ def registerNew():
         else:
             lastId=0
     with open("database.csv", "w") as f:
-        f.write("".join(a)+"\n"+str(lastId+1)+",,Non"*(len(q.questionsList)))
+        f.write("".join(a)+"\n"+str(lastId+1)+",,"*(len(q.questionsList)))
     return lastId+1
 
 def IdExists(userId):
@@ -39,7 +39,7 @@ def registerCours(userId, exerciceId):
         a=f.readlines()
     with open("database.csv", "w") as f:
         curr=a[userId].rstrip().split(",")
-        curr[(exerciceId+1)*2]="Oui"
+        curr[(exerciceId+1)*2]="X"
 
         a[userId]=",".join(curr)
         f.write("".join(a))

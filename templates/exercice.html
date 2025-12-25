@@ -17,7 +17,7 @@
     </div>
 
     {% if image!="" %}
-    <img src="{{ url_for("static", filename="/img/"~image) }}" width="200px">
+    <img src="{{ url_for("static", filename="/img/"~image) }}">
     {% endif %}
 
     <form action="/exercice/{{ exerciceId }}?userId={{ userId }}" method="POST">
