@@ -21,7 +21,7 @@ questionsList = []
 
 questionsList.append(Question(
     "1. Cette figure est-elle un rectangle ?",
-    "Rectangle: figure fermée à 4 cotés et à 4 angles droits",
+    "Définition: un rectangle est une figure fermée à 4 cotés et à 4 angles droits",
     imageQ="carre.png"
 ))
 questionsList.append(Question(
@@ -44,7 +44,7 @@ questionsList.append(Question(
 ))
 questionsList.append(Question(
     "4. Le chien est-il un animal ovipare ?",
-    "Un animal ovipare pond des oeufs."
+    "Définition: un animal ovipare pond des oeufs."
 ))
 questionsList.append(Question(
     "5. Quelle est la forme correcte au futur ?",
@@ -87,7 +87,7 @@ questionsList.append(Question(
 ))
 questionsList.append(Question(
     "6. Cette figure est-elle un triangle isocèle ?",
-    "Triangle isocèle: triangle avec deux cotés de longeurs égales.",
+    "Définition: un triangle isocèle est un triangle avec deux cotés de longeurs égales.",
     imageQ="isocele.png"
 ))
 questionsList.append(Question(
@@ -103,7 +103,7 @@ questionsList.append(Question(
 ))
 questionsList.append(Question(
     "9. Un arbre est-elle un être vivant ?",
-    "Un être vivant naît, grandit, se nourrit, se reproduit et meurt."
+    "Définition: Un être vivant naît, grandit, se nourrit, se reproduit et meurt."
 ))
 questionsList.append(Question(
     "10. La liquéfaction est le passage :",
@@ -119,4 +119,18 @@ questionsList.append(Question(
     "12. Qui est l'intrus ?",
     reponses=["Europe", "Amérique", "Indonésie", "Afrique"],
     imageC="planisphere.gif"
+))
+questionsList.append(Question(
+    "",
+    "Définition: un portrait est la description d'un personnage, qui permet au lecteur de l'imaginer.",
+    htmlQ="13. Le texte suivant est-il un portrait ? <br><br> \"Il n'est pas pire sourd que celui qui ne veut pas entendre.\" "
+))
+questionsList.append(Question(
+    "",
+    "Définition: le haiku est un court poème composé d'un vers court, d'un vers long et d'un dernier vers court.",
+    htmlQ="14. Le texte suivant est-il un haiku ? <br><br> Les feux sur les collines printanières <br> ont détruit les fleurs en boutons <br> nous avons de l'eau pour éteindre ces feux <br> mais le feu sans fumée qui brûle mon coeur <br> aucune eau ne peut l'éteindre <br> Kim Tok-Jyong"
+))
+questionsList.append(Question(
+    "15. Dans la phrase \"Il les écoutait parler.\", le mot \"les\" est-il un déterminant ?",
+    "Définition: un déterminant précise s'il y a un ou plusieurs objets ou personnes. Il est toujours suivi d'un nom."
 ))
