@@ -1,0 +1,17 @@
+body{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.grosTitre{
+    font-size: xx-large;
+}
+
+img{
+    max-width: 1000px;
+    max-height: 500px;
+}

@@ -51,6 +51,8 @@ def Cours(exerciceId):
     (enonce, image, htmlC) = q.questionsList[exerciceId-1].GetCours()
     return render_template("cours.html", userId=userId, exerciceId=exerciceId, enonce=enonce, image=image, htmlC=htmlC)
 
+def runApp():
+    app.run(host="0.0.0.0", debug=False)
 
-if __name__ == '__main__':
-    app.run(host="0.0.0.0", debug=True)
+def resetDatabase():
+    dbM.resetDatabase(len(q.questionsList))
