@@ -41,6 +41,7 @@ def changeAppStatus():
 
 
 window = tk.CTk()
+window.title="App"
 window.geometry("310x100")
 
 appAdressLabel = tk.CTkTextbox(window, height=25, width=300)
@@ -58,3 +59,4 @@ if __name__ == "__main__":
     multiprocessing.freeze_support()
 
     window.mainloop()
+    changeAppStatus()

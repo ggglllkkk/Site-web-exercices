@@ -45,7 +45,7 @@ def registerCours(userId, exerciceId):
         f.write("".join(a))
 
 def resetDatabase(numberOfColumns):
-    a=open("database.csv", "x")
+    a=open("database.csv", "w")
     a.close()
 
     with open("database.csv", "w") as f:
