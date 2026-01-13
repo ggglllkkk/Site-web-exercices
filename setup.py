@@ -5,9 +5,9 @@ build_exe_options = {"include_files": ["static", "templates"]}
 
 # On appelle la fonction setup
 setup(
-    name = "Site web exercices",
+    name = "Exercices website",
     version = "1",
-    description = "Site web mesurant des réponses à des exercices ainsi que la fréquence de consultation du cours.",
+    description = "Exercices website",
     executables = exe,
     options={"build_exe": build_exe_options},
 )

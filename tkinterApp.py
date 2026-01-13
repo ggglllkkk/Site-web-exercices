@@ -16,10 +16,12 @@ def getLocalIP():
         s.close()
     return IP
 
-def changeAppStatus():
+def changeAppStatus(isWindowClosed=False):
     global appProcess
     if __name__ == "__main__":
         if not appProcess.is_alive():
+            if isWindowClosed: return
+
             appProcess = multiprocessing.Process(target=runApp)
             appProcess.start()
 
@@ -31,6 +33,7 @@ def changeAppStatus():
             appAdressLabel.configure(state=tk.DISABLED)
         else:
             appProcess.terminate()
+            if isWindowClosed: return
 
             runAppButton.configure(text="Start Server")
 
@@ -59,4 +62,4 @@ if __name__ == "__main__":
     multiprocessing.freeze_support()
 
     window.mainloop()
-    changeAppStatus()
+    changeAppStatus(True)
