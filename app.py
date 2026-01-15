@@ -15,7 +15,7 @@ def Login():
     else:
         userId=request.form.get("userId")
         if not dbM.IdExists(userId):
-            return render_template("login.html")
+            return render_template("login.html", error="L'id n'existe pas, vérifier le numéro ou revenir à l'accueil pour recréer un compte")
         return redirect(url_for("Exercice", exerciceId=1, userId=userId))
 
 @app.route("/register", methods=["GET", "POST"])
@@ -31,6 +31,10 @@ def Register():
 def Exercice(exerciceId):
     userId=int(request.args.get("userId"))
     exerciceId=int(exerciceId)
+
+    if not dbM.IdExists(userId):
+        return render_template("message.html", error="Id n'existe pas, il faut recréer un compte depuis l'accueil")
+
     if request.method=="GET":
         if exerciceId-1>=len(q.questionsList):
             return render_template("termine.html")
@@ -51,8 +55,10 @@ def Cours(exerciceId):
     (enonce, image, htmlC) = q.questionsList[exerciceId-1].GetCours()
     return render_template("cours.html", userId=userId, exerciceId=exerciceId, enonce=enonce, image=image, htmlC=htmlC)
 
-def runApp():
-    app.run(host="0.0.0.0", debug=False)
+def runApp(debug=False):
+    app.run(host="0.0.0.0", debug=debug)
 
 def resetDatabase():
     dbM.resetDatabase(len(q.questionsList))
+
+#runApp(True)

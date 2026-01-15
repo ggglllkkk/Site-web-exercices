@@ -17,9 +17,12 @@ def registerNew():
     return lastId+1
 
 def IdExists(userId):
-    with open(cwd+"/database.csv", "r") as f:
-        maxId=len(f.readlines())-1
-    return 1<=int(userId)<=int(maxId)
+    try:
+        with open(cwd+"/database.csv", "r") as f:
+            maxId=len(f.readlines())-1
+        return 1<=int(userId)<=int(maxId)
+    except:
+        return False
 
 def registerAnswer(userId, exerciceId, answers, textInput):
     realAnswers=[]
