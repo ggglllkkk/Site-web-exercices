@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<form action="/setSelection?userId={{ userId }}" method="POST">
+    <div><input type="text" name="setId" placeholder="numéro de série d'exercice"></div>
+    <button><p class="grosTitre"> Faire les exercices </p></button>
+</form>
+
+{% endblock %}

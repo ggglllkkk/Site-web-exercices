@@ -13,14 +13,14 @@
         {{ enonce }}
         {{ htmlQ | safe }}
 
-        <button class="coursButton" onclick="window.open('/cours/{{ exerciceId }}?userId={{ userId }}','_blank')">Cours</button>
+        <button class="coursButton" onclick="window.open('/cours/{{ setId }}/{{ exerciceId }}?userId={{ userId }}','_blank')">Cours</button>
     </div>
 
     {% if image!="" %}
     <img src="{{ url_for("static", filename="/img/"~image) }}">
     {% endif %}
 
-    <form action="/exercice/{{ exerciceId }}?userId={{ userId }}" method="POST">
+    <form action="/exercice/{{ setId }}/{{ exerciceId }}?userId={{ userId }}" method="POST">
 
     <div class="answerBox">
         {% if textInput %}

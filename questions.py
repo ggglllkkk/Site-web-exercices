@@ -10,6 +10,9 @@ class QuestionSet:
 
     def __getitem__(self, index):
         return self.questionsList[index]
+    
+    def __len__(self):
+        return len(self.questionsList)
 
 class Question:
     def __init__(self, enonceQ, enonceC="", reponses=["Oui", "Non"], imageQ="", htmlQ="", imageC="", htmlC="", textInput=False):
@@ -31,6 +34,18 @@ class Question:
         return (self.enonceQ, self.imageQ, self.htmlQ, self.reponses, self.textInput)
 
 questionSetList=[]
+
+def SetIdExists(setId):
+    return 1<= setId <=len(questionSetList)
+
+def MaxNumberOfQuestions():
+    maxQ = len(questionSetList[0])
+
+    for k in questionSetList[1:]:
+        if len(k) > maxQ:
+            maxQ = len(k)
+        
+    return maxQ
 
 def addQuestionSet1():
     questionSet = QuestionSet()
@@ -118,7 +133,7 @@ def addQuestionSet1():
         imageC="tableauPythagore.png"
     )
     questionSet+=Question(
-        "9. Un arbre est-elle un être vivant ?",
+        "9. Un arbre est-il un être vivant ?",
         "Définition: Un être vivant naît, grandit, se nourrit, se reproduit et meurt."
     )
     questionSet+=Question(
@@ -155,7 +170,17 @@ def addQuestionSet1():
 
     return questionSet
 
+def addQuestionSet2():
+    global questionSetList
 
+    questionSet=QuestionSet()
+
+    questionSet+=Question("va nicker tes morts")
+
+    questionSet+=Question("gurhjokg")
+
+    questionSetList.append(questionSet)
 
 
 questionsList=addQuestionSet1()
+addQuestionSet2()
