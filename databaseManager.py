@@ -17,7 +17,7 @@ def registerNew():
         f.write(str(lastId+1)+",0"+",,"*(len(q.questionSetList[0])))
         print(len(q.questionSetList))
         for k in range(1, len(q.questionSetList)):
-            f.write("\n"+","+str(k)+",,"*(len(q.questionSetList[k])))
+            f.write("\n"+","+str(k+1)+",,"*(len(q.questionSetList[k])))
     return lastId+1
 
 def IdExists(userId):

@@ -175,9 +175,9 @@ def addQuestionSet2():
 
     questionSet=QuestionSet()
 
-    questionSet+=Question("va nicker tes morts")
+    questionSet+=Question("test1")
 
-    questionSet+=Question("gurhjokg")
+    questionSet+=Question("test2")
 
     questionSetList.append(questionSet)
 
