@@ -80,9 +80,7 @@ def Cours(setId, exerciceId):
     return render_template("cours.html", userId=userId, exerciceId=exerciceId, enonce=enonce, image=image, htmlC=htmlC)
 
 def runApp(debug=False):
-    app.run(host="0.0.0.0", debug=debug)
+    app.run(host="0.0.0.0", debug=debug, threaded=True)
 
 def resetDatabase():
     dbM.resetDatabase(q.MaxNumberOfQuestions())
-
-#runApp(True)
