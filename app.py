@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory
+from waitress import serve
 import databaseManager as dbM
 import questions as q
 
@@ -80,7 +81,10 @@ def Cours(setId, exerciceId):
     return render_template("cours.html", userId=userId, exerciceId=exerciceId, enonce=enonce, image=image, htmlC=htmlC)
 
 def runApp(debug=False):
-    app.run(host="0.0.0.0", debug=debug, threaded=True)
+    if debug:
+        app.run(host="0.0.0.0", threaded=True)
+    else:
+        serve(app, host="0.0.0.0", port=5000)
 
 def resetDatabase():
     dbM.resetDatabase(q.MaxNumberOfQuestions())

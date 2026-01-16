@@ -3,7 +3,7 @@ import multiprocessing; multiprocessing.freeze_support
 import socket
 from app import runApp, resetDatabase
 
-appProcess = multiprocessing.Process(target=runApp)
+appProcess = None
 
 def getLocalIP():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -18,11 +18,12 @@ def getLocalIP():
 
 def changeAppStatus(isWindowClosed=False):
     global appProcess
+
     if __name__ == "__main__":
-        if not appProcess.is_alive():
+        if appProcess == None or not appProcess.is_alive():
             if isWindowClosed: return
 
-            appProcess = multiprocessing.Process(target=runApp)
+            appProcess = multiprocessing.Process(target=runApp, args=(False,))
             appProcess.start()
 
             runAppButton.configure(text="Stop Server")
@@ -33,6 +34,9 @@ def changeAppStatus(isWindowClosed=False):
             appAdressLabel.configure(state=tk.DISABLED)
         else:
             appProcess.terminate()
+            appProcess.join()
+            appProcess=None
+
             if isWindowClosed: return
 
             runAppButton.configure(text="Start Server")

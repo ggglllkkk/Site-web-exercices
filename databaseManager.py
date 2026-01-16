@@ -51,7 +51,6 @@ def registerCours(userId, setId, exerciceId):
         a=f.readlines()
     
     curr=a[(userId-1)*len(q.questionSetList)+setId].split(",")
-    print(curr)
     curr[exerciceId*2+3]="X"
     a[(userId-1)*len(q.questionSetList)+setId]=",".join(curr)
     
