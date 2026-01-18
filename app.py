@@ -88,3 +88,9 @@ def runApp(debug=False):
 
 def resetDatabase():
     dbM.resetDatabase(q.MaxNumberOfQuestions())
+
+def getDatabaseInfos():
+    return dbM.getDatabaseInfos()
+
+def getMaxNumberOfColumns():
+    return q.MaxNumberOfQuestions()
