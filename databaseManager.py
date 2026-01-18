@@ -1,5 +1,5 @@
 from sqlite3 import *
-from os import getcwd
+from os import getcwd, listdir
 from threading import Lock
 import questions as q
 
@@ -64,13 +64,13 @@ def registerCours(userId, setId, exerciceId):
         with open(cwd+"/database.csv", "w") as f:
             f.write("".join(a))
 
-def resetDatabase(maxNumberOfColumns):
+def resetDatabase():
     with lock:
         a=open(cwd+"/database.csv", "w")
         a.close()
 
         with open(cwd+"/database.csv", "w") as f:
-            f.write("userId,setId,"+",".join(["Reponse "+str(k+1)+", Cours lu "+str(k+1) for k in range(maxNumberOfColumns)]))
+            f.write("userId,setId,"+",".join(["Reponse "+str(k+1)+", Cours lu "+str(k+1) for k in range(q.MaxNumberOfQuestions())]))
 
 def getDatabaseInfos():
     with lock:
@@ -80,3 +80,9 @@ def getDatabaseInfos():
         a=[k.rstrip().split(",") for k in a[1:]]
         
         return a
+
+def checkDatabaseExists():
+    if not "database.csv" in listdir():
+        resetDatabase()
+
+checkDatabaseExists()
