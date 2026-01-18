@@ -87,4 +87,10 @@ def runApp(debug=False):
         serve(app, host="0.0.0.0", port=5000)
 
 def resetDatabase():
-    dbM.resetDatabase(q.MaxNumberOfQuestions())
+    dbM.resetDatabase()
+
+def getDatabaseInfos():
+    return dbM.getDatabaseInfos()
+
+def getMaxNumberOfColumns():
+    return q.MaxNumberOfQuestions()
