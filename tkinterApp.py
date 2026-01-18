@@ -74,13 +74,13 @@ def changeDatabaseStatus():
     if databaseStatus:
         updateDatabase()
 
-        databaseFrame.grid(row=5, sticky="nsew")
+        databaseCanvasFrame.grid(row=5, sticky="nsew")
         showDatabaseButton.configure(text="Hide database")
         updateDatabaseButton.grid(row=6)
     else:
         showDatabaseButton.configure(text="Show database")
         updateDatabaseButton.grid_forget()
-        databaseFrame.grid_forget()
+        databaseCanvasFrame.grid_forget()
 
 def updateDatabase():
     bgColors=["red", "green"]
@@ -110,7 +110,12 @@ def updateDatabase():
             
                 b.pack(padx=1, pady=1)
                 a.grid(row=k+1, column=n//2+1)
+    
+    databaseFrame.update_idletasks()
+    databaseCanvas.configure(scrollregion=databaseCanvas.bbox("all"))
 
+def onFrameConfigure(canvas):
+    canvas.configure(scrollregion=canvas.bbox("all"))
 
 window = ctk.CTk()
 window.title="App"
@@ -136,7 +141,25 @@ showDatabaseButton.grid(row=4)
 
 updateDatabaseButton = ctk.CTkButton(window, text="Update database", command=updateDatabase)
 
-databaseFrame=ctk.CTkScrollableFrame(window)
+
+databaseCanvasFrame=ctk.CTkFrame(window, bg_color="#2b2b2b", border_width=0)
+databaseCanvasFrame.columnconfigure(0, weight=1)
+databaseCanvasFrame.rowconfigure(0, weight=1)
+
+databaseFrame=ctk.CTkFrame(databaseCanvasFrame)
+
+databaseCanvas=ctk.CTkCanvas(databaseCanvasFrame)
+databaseCanvas.create_window((0,0), window=databaseFrame, anchor="nw")
+databaseCanvas.grid(row=0, column=0)
+
+vsb=ctk.CTkScrollbar(databaseCanvasFrame, orientation="vertical", command=databaseCanvas.yview)
+vsb.grid(row=0, column=1)
+
+hsb=ctk.CTkScrollbar(databaseCanvasFrame, orientation="horizontal", command=databaseCanvas.xview)
+hsb.grid(row=1, column=0)
+
+databaseCanvas.configure(yscrollcommand=vsb.set, xscrollcommand=hsb.set)
+databaseFrame.bind("<Configure>", lambda event, canvas=databaseCanvas: onFrameConfigure(databaseCanvas))
 
 
 if __name__ == "__main__":
