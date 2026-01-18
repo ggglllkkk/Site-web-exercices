@@ -43,7 +43,7 @@ def changeAppStatus(isWindowClosed=False):
         if appProcess == None or not appProcess.is_alive():
             if isWindowClosed: return
 
-            appProcess = multiprocessing.Process(target=runApp, args=(False,))
+            appProcess = multiprocessing.Process(target=runApp, args=(True,))
             appProcess.start()
 
             runAppButton.configure(text="Stop Server")
@@ -74,7 +74,7 @@ def changeDatabaseStatus():
     if databaseStatus:
         updateDatabase()
 
-        databaseCanvasFrame.grid(row=5, sticky="nsew")
+        databaseCanvasFrame.grid(row=5, sticky="nswe")
         showDatabaseButton.configure(text="Hide database")
         updateDatabaseButton.grid(row=6)
     else:
@@ -90,12 +90,12 @@ def updateDatabase():
 
     databaseInfo = getDatabaseInfos()
 
-    temp=["userId", "setId"]+list(range(1, getMaxNumberOfColumns()))
+    temp=["userId", "setId"]+list(range(1, getMaxNumberOfColumns()+1))
     for n in range(len(temp)):
         a=ctk.CTkFrame(databaseFrame)
         b=ctk.CTkLabel(a, text=temp[n], padx=5)
-        b.pack(padx=1, pady=1)
-        a.grid(row=0, column=n)
+        b.pack(padx=1, pady=1, fill="both", expand=True)
+        a.grid(row=0, column=n, sticky="nswe")
 
     for k in range(len(databaseInfo)):
         userIdLabel=ctk.CTkLabel(databaseFrame, text=databaseInfo[k][0], padx=5)
@@ -108,14 +108,21 @@ def updateDatabase():
                 a=ctk.CTkFrame(databaseFrame)
                 b=ctk.CTkLabel(a, text=databaseInfo[k][n], padx=5, bg_color=bgColors[databaseInfo[k][n+1]=="X"], corner_radius=0)
             
-                b.pack(padx=1, pady=1)
-                a.grid(row=k+1, column=n//2+1)
+                b.pack(padx=1, pady=1, fill="both", expand=True)
+                a.grid(row=k+1, column=n//2+1, sticky="nswe")
     
     databaseFrame.update_idletasks()
     databaseCanvas.configure(scrollregion=databaseCanvas.bbox("all"))
 
-def onFrameConfigure(canvas):
-    canvas.configure(scrollregion=canvas.bbox("all"))
+def onFrameConfigure(event):
+    databaseCanvas.configure(scrollregion=databaseCanvas.bbox("all"))
+
+def onCanvasConfigure(event):
+    databaseCanvas.itemconfig(databaseFrameWindow, width=event.width)
+
+def onMouseWheel(event):
+    databaseCanvas.yview_scroll(int(-1*(event.delta/120)), "units")
+
 
 window = ctk.CTk()
 window.title="App"
@@ -142,24 +149,25 @@ showDatabaseButton.grid(row=4)
 updateDatabaseButton = ctk.CTkButton(window, text="Update database", command=updateDatabase)
 
 
-databaseCanvasFrame=ctk.CTkFrame(window, bg_color="#2b2b2b", border_width=0)
+databaseCanvasFrame=ctk.CTkFrame(window, fg_color="#2b2b2b", border_width=0)
 databaseCanvasFrame.columnconfigure(0, weight=1)
 databaseCanvasFrame.rowconfigure(0, weight=1)
 
-databaseFrame=ctk.CTkFrame(databaseCanvasFrame)
+databaseCanvas=ctk.CTkCanvas(databaseCanvasFrame, bg="#2b2b2b", highlightthickness=0)
+databaseCanvas.grid(row=0, column=0, sticky="nswe")
 
-databaseCanvas=ctk.CTkCanvas(databaseCanvasFrame)
-databaseCanvas.create_window((0,0), window=databaseFrame, anchor="nw")
-databaseCanvas.grid(row=0, column=0)
+databaseFrame=ctk.CTkFrame(databaseCanvasFrame)
+databaseFrameWindow=databaseCanvas.create_window((0,0), window=databaseFrame, anchor="nw")
 
 vsb=ctk.CTkScrollbar(databaseCanvasFrame, orientation="vertical", command=databaseCanvas.yview)
-vsb.grid(row=0, column=1)
+vsb.grid(row=0, column=1, sticky="ns")
 
 hsb=ctk.CTkScrollbar(databaseCanvasFrame, orientation="horizontal", command=databaseCanvas.xview)
-hsb.grid(row=1, column=0)
+hsb.grid(row=1, column=0, sticky="we")
 
 databaseCanvas.configure(yscrollcommand=vsb.set, xscrollcommand=hsb.set)
-databaseFrame.bind("<Configure>", lambda event, canvas=databaseCanvas: onFrameConfigure(databaseCanvas))
+window.bind("<MouseWheel>", onMouseWheel)
+databaseFrame.bind("<Configure>", onFrameConfigure)
 
 
 if __name__ == "__main__":
