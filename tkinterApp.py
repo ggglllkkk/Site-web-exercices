@@ -129,6 +129,8 @@ window.title="App"
 window.columnconfigure(0, weight=1)
 window.rowconfigure(5, weight=1)
 
+bgColor=window.cget("background")
+
 
 appAdressLabel = ctk.CTkTextbox(window, height=25, width=300)
 appAdressLabel.insert("1.0", "Server not running")
@@ -149,11 +151,11 @@ showDatabaseButton.grid(row=4)
 updateDatabaseButton = ctk.CTkButton(window, text="Update database", command=updateDatabase)
 
 
-databaseCanvasFrame=ctk.CTkFrame(window, fg_color="#2b2b2b", border_width=0)
+databaseCanvasFrame=ctk.CTkFrame(window, fg_color=bgColor, border_width=0)
 databaseCanvasFrame.columnconfigure(0, weight=1)
 databaseCanvasFrame.rowconfigure(0, weight=1)
 
-databaseCanvas=ctk.CTkCanvas(databaseCanvasFrame, bg="#2b2b2b", highlightthickness=0)
+databaseCanvas=ctk.CTkCanvas(databaseCanvasFrame, bg=bgColor, highlightthickness=0)
 databaseCanvas.grid(row=0, column=0, sticky="nswe")
 
 databaseFrame=ctk.CTkFrame(databaseCanvasFrame)
