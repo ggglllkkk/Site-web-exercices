@@ -1,85 +1,72 @@
-from sqlite3 import *
+import sqlite3
 from os import getcwd, listdir
 from threading import Lock
 import questions as q
 
-lock=Lock()
-
 cwd = getcwd()
 print(cwd)
 
-def registerNew():
-    with lock:
-        with open(cwd+"/database.csv", "r") as f:
-            a=f.readlines()
-            if len(a)!=1:
-                lastId=(len(a)-1)//len(q.questionSetList)
-            else:
-                lastId=0
-        with open(cwd+"/database.csv", "w") as f:
-            f.write("".join(a)+"\n")
-            f.write(str(lastId+1)+",1"+",,"*(len(q.questionSetList[0])))
-            print(len(q.questionSetList))
-            for k in range(1, len(q.questionSetList)):
-                f.write("\n"+","+str(k+1)+",,"*(len(q.questionSetList[k])))
-        return lastId+1
+def registerNew(studentName):
+    with sqlite3.connect("database.db") as connexion:
+        cursor=connexion.cursor()
 
-def IdExists(userId):
-    try:
-        with lock:
-            with open(cwd+"/database.csv", "r") as f:
-                maxId=(len(f.readlines())-1)//len(q.questionSetList)
-        return 1<=int(userId)<=int(maxId)
-    except:
-        return False
+        for k in range(len(q.questionSetList)):
+            cursor.execute(f"INSERT INTO serie{k+1} (studentName) VALUES (?);", (studentName,))
 
-def registerAnswer(userId, setId, exerciceId, answers, textInput):
-    realAnswers=[]
-    if textInput!=None:
-        realAnswers.append("\""+textInput+"\"")
+        connexion.commit()
+
+def IdExists(username):
+    with sqlite3.connect("database.db") as connexion:
+        cursor=connexion.cursor()
+
+        studentNames=cursor.execute(f"SELECT * FROM serie1 WHERE studentName = ?;", (username,))
+        return studentNames.fetchall() != []
+
+def registerAnswer(username, setId, exerciceId, answers, textInput):
+    answer=textInput
+
     for k in range(len(answers)):
         if answers[k]:
-            realAnswers.append(q.questionSetList[setId-1][exerciceId].reponses[k])
-
-    with lock:
-        with open(cwd+"/database.csv", "r") as f:
-            a=f.readlines()
-
-        curr=a[(userId-1)*len(q.questionSetList)+setId].split(",")
-        curr[exerciceId*2+2]=";".join(realAnswers)
-        a[(userId-1)*len(q.questionSetList)+setId]=",".join(curr)
+            answer=(q.questionSetList[setId-1][exerciceId].reponses[k])
     
-        with open(cwd+"/database.csv", "w") as f:
-            f.write("".join(a))
+    with sqlite3.connect("database.db") as connexion:
+        cursor=connexion.cursor()
+
+        cursor.execute(f"UPDATE serie{setId} SET question{exerciceId}=? WHERE studentName=?;", (answer, username))
+
+        connexion.commit()
 
 def registerCours(userId, setId, exerciceId):
-    with lock:
-        with open(cwd+"/database.csv", "r") as f:
-            a=f.readlines()
-    
-        curr=a[(userId-1)*len(q.questionSetList)+setId].split(",")
-        curr[exerciceId*2+3]="X"
-        a[(userId-1)*len(q.questionSetList)+setId]=",".join(curr)
+    with open(cwd+"/database.csv", "r") as f:
+        a=f.readlines()
 
-        with open(cwd+"/database.csv", "w") as f:
-            f.write("".join(a))
+    curr=a[(userId-1)*len(q.questionSetList)+setId].split(",")
+    curr[exerciceId*2+3]="X"
+    a[(userId-1)*len(q.questionSetList)+setId]=",".join(curr)
+
+    with open(cwd+"/database.csv", "w") as f:
+        f.write("".join(a))
 
 def resetDatabase():
-    with lock:
-        a=open(cwd+"/database.csv", "w")
-        a.close()
+    with open("database.db", "w"):
+        pass
 
-        with open(cwd+"/database.csv", "w") as f:
-            f.write("userId,setId,"+",".join(["Reponse "+str(k+1)+", Cours lu "+str(k+1) for k in range(q.MaxNumberOfQuestions())]))
+    with sqlite3.connect("database.db") as connexion:
+        cursor=connexion.cursor()
+
+        for k in range(len(q.questionSetList)):
+            command=f"CREATE TABLE serie{k+1} (studentName VARCHAR(4) PRIMARY KEY, {",".join([f"question{n+1}Answer VARCHAR(50), question{n+1}Lesson BOOLEAN DEFAULTS false" for n in range(len(q.questionSetList[k].questionsList))])});"
+            cursor.execute(command)
+
+        connexion.commit()
 
 def getDatabaseInfos():
-    with lock:
-        with open(cwd+"/database.csv", "r") as f:
-            a=f.readlines()
+    with open(cwd+"/database.csv", "r") as f:
+        a=f.readlines()
 
-        a=[k.rstrip().split(",") for k in a[1:]]
+    a=[k.rstrip().split(",") for k in a[1:]]
         
-        return a
+    return a
 
 def checkDatabaseExists():
     if not "database.csv" in listdir():
