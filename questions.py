@@ -184,4 +184,3 @@ def addQuestionSet2():
 
 questionsList=addQuestionSet1()
 addQuestionSet2()
-addQuestionSet2()

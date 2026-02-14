@@ -10,10 +10,15 @@ def registerNew(studentName):
     with sqlite3.connect("database.db") as connexion:
         cursor=connexion.cursor()
 
+        if cursor.execute("SELECT * FROM serie1 WHERE studentName=?;", (studentName, )).fetchone() != None:
+            return False
+
         for k in range(len(q.questionSetList)):
             cursor.execute(f"INSERT INTO serie{k+1} (studentName) VALUES (?);", (studentName,))
 
         connexion.commit()
+    
+    return True
 
 def IdExists(studentName):
     with sqlite3.connect("database.db") as connexion:

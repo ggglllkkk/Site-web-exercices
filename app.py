@@ -15,7 +15,7 @@ def Login():
         return render_template("login.html")
     else:
         studentName=request.form.get("studentName")
-        if not dbM.IdExists(studentName):
+        if dbM.IdExists(studentName) == False:
             return render_template("login.html", error="L'id n'existe pas, vérifier le numéro ou revenir à l'accueil pour recréer un compte")
         return redirect(url_for("SetSelection", studentName=studentName))
 
@@ -27,7 +27,8 @@ def Register():
         studentName=request.form.get("studentName")
         if len(studentName) < 3:
             return render_template("register.html", error="il faut rentrer les trois premières lettres de ton prénom")
-        dbM.registerNew(studentName)
+        if not dbM.registerNew(studentName):
+            return render_template("register.html", error="ces trois lettres sont déjà prises, appelle ton professeur")
         return redirect(url_for("SetSelection", studentName=studentName))
     
 @app.route("/setSelection", methods=["GET", "POST"])
@@ -35,7 +36,7 @@ def SetSelection():
     studentName=request.args.get("studentName")
 
     if not dbM.IdExists(studentName):
-        return render_template("message.html", error="Id n'existe pas, il faut recréer un compte depuis l'accueil")
+        return render_template("message.html", error="studentName n'existe pas, il faut recréer un compte depuis l'accueil")
     
     if request.method=="GET":
         return render_template("setSelection.html", studentName=studentName)
