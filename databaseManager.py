@@ -15,14 +15,14 @@ def registerNew(studentName):
 
         connexion.commit()
 
-def IdExists(username):
+def IdExists(studentName):
     with sqlite3.connect("database.db") as connexion:
         cursor=connexion.cursor()
 
-        studentNames=cursor.execute(f"SELECT * FROM serie1 WHERE studentName = ?;", (username,))
+        studentNames=cursor.execute(f"SELECT * FROM serie1 WHERE studentName = ?;", (studentName,))
         return studentNames.fetchall() != []
 
-def registerAnswer(username, setId, exerciceId, answers, textInput):
+def registerAnswer(studentName, setId, exerciceId, answers, textInput):
     answer=textInput
 
     for k in range(len(answers)):
@@ -32,20 +32,17 @@ def registerAnswer(username, setId, exerciceId, answers, textInput):
     with sqlite3.connect("database.db") as connexion:
         cursor=connexion.cursor()
 
-        cursor.execute(f"UPDATE serie{setId} SET question{exerciceId}=? WHERE studentName=?;", (answer, username))
+        cursor.execute(f"UPDATE serie{setId} SET question{exerciceId+1}Answer=? WHERE studentName=?;", (answer, studentName))
 
         connexion.commit()
 
-def registerCours(userId, setId, exerciceId):
-    with open(cwd+"/database.csv", "r") as f:
-        a=f.readlines()
+def registerCours(studentName, setId, exerciceId):
+    with sqlite3.connect("database.db") as connexion:
+        cursor=connexion.cursor()
 
-    curr=a[(userId-1)*len(q.questionSetList)+setId].split(",")
-    curr[exerciceId*2+3]="X"
-    a[(userId-1)*len(q.questionSetList)+setId]=",".join(curr)
+        cursor.execute(f"UPDATE serie{setId} SET question{exerciceId+1}Lesson=? WHERE studentName=?;", (True, studentName))
 
-    with open(cwd+"/database.csv", "w") as f:
-        f.write("".join(a))
+        connexion.commit()
 
 def resetDatabase():
     with open("database.db", "w"):
@@ -55,18 +52,18 @@ def resetDatabase():
         cursor=connexion.cursor()
 
         for k in range(len(q.questionSetList)):
-            command=f"CREATE TABLE serie{k+1} (studentName VARCHAR(4) PRIMARY KEY, {",".join([f"question{n+1}Answer VARCHAR(50), question{n+1}Lesson BOOLEAN DEFAULTS false" for n in range(len(q.questionSetList[k].questionsList))])});"
+            command=f"CREATE TABLE serie{k+1} (studentName VARCHAR(4) PRIMARY KEY, {",".join([f"question{n+1}Answer VARCHAR(50) DEFAULT \"\", question{n+1}Lesson BOOLEAN DEFAULT false" for n in range(len(q.questionSetList[k].questionsList))])});"
             cursor.execute(command)
 
         connexion.commit()
 
 def getDatabaseInfos():
-    with open(cwd+"/database.csv", "r") as f:
-        a=f.readlines()
+    with sqlite3.connect("database.db") as connexion:
+        cursor=connexion.cursor()
 
-    a=[k.rstrip().split(",") for k in a[1:]]
+        data=[cursor.execute(f"SELECT * FROM serie{k+1};").fetchall() for k in range(len(q.questionSetList))]
         
-    return a
+    return data
 
 def checkDatabaseExists():
     if not "database.csv" in listdir():

@@ -2,14 +2,9 @@
 
 {% block body %}
 
-<form action="/register?userId={{ userId }}" method="POST">
-
-<p class="grosTitre"> Ton numéro de compte est : </p>
-<p class="grosTitre">{{ userId }}</p>
-<p class="grosTitre">Appelle ton professeur pour l'en informer.</p>
-
-<button type="submit"><p class="grosTitre"> Commencer les exercices </p></button>
-
+<form action="/register" method="POST">
+    <div><input type="text" name="studentName" placeholder="Les trois premières lettres de ton prénom"></div>
+    <button><p class="grosTitre"> Créer son compte </p></button>
 </form>
 
 {% endblock %}

@@ -90,26 +90,28 @@ def updateDatabase():
 
     databaseInfo = getDatabaseInfos()
 
-    temp=["userId", "setId"]+list(range(1, getMaxNumberOfColumns()+1))
+    temp=["studentName", "setId"]+list(range(1, getMaxNumberOfColumns()+1))
     for n in range(len(temp)):
         a=ctk.CTkFrame(databaseFrame)
         b=ctk.CTkLabel(a, text=temp[n], padx=5)
         b.pack(padx=1, pady=1, fill="both", expand=True)
         a.grid(row=0, column=n, sticky="nswe")
 
-    for k in range(len(databaseInfo)):
-        userIdLabel=ctk.CTkLabel(databaseFrame, text=databaseInfo[k][0], padx=5)
-        userIdLabel.grid(row=k+1, column=0)
-        setIdLabel=ctk.CTkLabel(databaseFrame, text=databaseInfo[k][1], padx=5)
-        setIdLabel.grid(row=k+1, column=1)
+    for k in range(len(databaseInfo[0])):
+        studentNameLabel=ctk.CTkLabel(databaseFrame, text=databaseInfo[0][k][0], padx=5)
+        studentNameLabel.grid(row=k*len(databaseInfo)+1, column=0)
 
-        for n in range(2, len(databaseInfo[k]), 2):
-            if databaseInfo[k][n] != "":
-                a=ctk.CTkFrame(databaseFrame)
-                b=ctk.CTkLabel(a, text=databaseInfo[k][n], padx=5, bg_color=bgColors[databaseInfo[k][n+1]=="X"], corner_radius=0)
-            
-                b.pack(padx=1, pady=1, fill="both", expand=True)
-                a.grid(row=k+1, column=n//2+1, sticky="nswe")
+        for n in range(len(databaseInfo)):
+            setIdLabel=ctk.CTkLabel(databaseFrame, text=str(n+1), padx=5)
+            setIdLabel.grid(row=k*len(databaseInfo)+n+1, column=1)
+
+            for i in range((len(databaseInfo[n][0])-1)//2):
+                if databaseInfo[n][k][i*2+1] != "":
+                    a=ctk.CTkFrame(databaseFrame)
+                    b=ctk.CTkLabel(a, text=databaseInfo[n][k][i*2+1], padx=5, bg_color=bgColors[databaseInfo[n][k][i*2+2]], corner_radius=0)
+
+                    b.pack(padx=1, pady=1, fill="both", expand=True)
+                    a.grid(row=k*len(databaseInfo)+n+1, column=i+2, sticky="nswe")
     
     databaseFrame.update_idletasks()
     databaseCanvas.configure(scrollregion=databaseCanvas.bbox("all"))
